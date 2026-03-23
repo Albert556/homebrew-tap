@@ -1,22 +1,34 @@
 class AiProviders < Formula
-  desc "Manage AI tool configuration profiles"
+  desc "Manage AI tool configuration profiles from the command line"
   homepage "https://github.com/Albert556/ai-providers"
-  url "https://github.com/Albert556/ai-providers/archive/refs/tags/v1.1.0.tar.gz"
-  sha256 "f4f71634359d665a521137e4ea8cf6efaf9f6609649256ab3a1b01197356096f"
-  license any_of: ["Apache-2.0", "MIT"]
+  version "1.1.1"
+  license any_of: ["MIT", "Apache-2.0"]
 
-  depends_on "rust" => :build
+  on_macos do
+    on_arm do
+      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.1/aip-v1.1.1-aarch64-apple-darwin"
+      sha256 "2c081a6fa0d3b80a48deb7f4e1371befb61066db87a02dea8e27a8e0cfcf5cf8"
+    end
+  end
+
+  on_linux do
+    on_intel do
+      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.1/aip-v1.1.1-x86_64-unknown-linux-gnu"
+      sha256 "2ddbe51bb87cf02e8c520d8ee97f11e70510044710ce83ccd9157c72e65adebf"
+    end
+  end
 
   def install
-    system "cargo", "install", *std_cargo_args(path: ".")
-    generate_completions_from_executable(
-      bin/"aip", "completion",
-      shells: [:bash, :zsh, :fish, :pwsh]
-    )
+    if OS.mac?
+      bin.install "aip-v#{version}-aarch64-apple-darwin" => "aip"
+    elsif OS.linux?
+      bin.install "aip-v#{version}-x86_64-unknown-linux-gnu" => "aip"
+    end
+
+    generate_completions_from_executable(bin/"aip", "completion")
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/aip --version")
-    assert_match "_aip", shell_output("#{bin}/aip completion zsh")
   end
 end
