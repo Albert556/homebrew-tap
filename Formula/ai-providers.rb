@@ -1,20 +1,20 @@
 class AiProviders < Formula
   desc "Manage AI tool configuration profiles from the command line"
   homepage "https://github.com/Albert556/ai-providers"
-  version "1.1.1"
+  version "1.1.2"
   license any_of: ["MIT", "Apache-2.0"]
 
   on_macos do
     on_arm do
-      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.1/aip-v1.1.1-aarch64-apple-darwin"
-      sha256 "2c081a6fa0d3b80a48deb7f4e1371befb61066db87a02dea8e27a8e0cfcf5cf8"
+      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.2/aip-v1.1.2-aarch64-apple-darwin"
+      sha256 "5171ba7304da4c0bcc079c59b52d70d2c5aee11326c2d9ef1533caa112cfa9fe"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.1/aip-v1.1.1-x86_64-unknown-linux-gnu"
-      sha256 "2ddbe51bb87cf02e8c520d8ee97f11e70510044710ce83ccd9157c72e65adebf"
+      url "https://github.com/Albert556/ai-providers/releases/download/v1.1.2/aip-v1.1.2-x86_64-unknown-linux-gnu"
+      sha256 "b36119b4ef781da0e032433c95e0e45788ee6eb9511f675025053aed9c5cc335"
     end
   end
 
@@ -24,6 +24,8 @@ class AiProviders < Formula
     elsif OS.linux?
       bin.install "aip-v#{version}-x86_64-unknown-linux-gnu" => "aip"
     end
+
+    chmod 0555, bin/"aip"
 
     generate_completions_from_executable(bin/"aip", "completion")
   end
